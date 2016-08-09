@@ -1,0 +1,4 @@
+[root]
+name = "ghq-updater-rs"
+version = "0.1.0"
+
