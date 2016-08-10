@@ -1,4 +1,5 @@
-extern crate chan;
+extern crate wait_group;
+use self::wait_group::WaitGroup;
 
 use std::ffi::OsStr;
 use std::fs;
@@ -17,7 +18,7 @@ use super::Args;
 pub struct Ghqup {
     root: PathBuf,
     args: Args,
-    wg: chan::WaitGroup,
+    wg: WaitGroup,
 }
 
 impl Ghqup {
@@ -25,7 +26,7 @@ impl Ghqup {
         Ghqup {
             root: PathBuf::from(path),
             args: args,
-            wg: chan::WaitGroup::new(),
+            wg: WaitGroup::new(),
         }
     }
 

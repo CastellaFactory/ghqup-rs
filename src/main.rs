@@ -7,8 +7,6 @@ use docopt::Docopt;
 use std::error::Error;
 use std::process;
 
-use ghqup::Ghqup;
-
 mod ghqup;
 
 const USAGE: &'static str = "
@@ -48,7 +46,7 @@ fn main() {
         Ok(output) => {
             match String::from_utf8(output.stdout) {
                 Ok(root) => {
-                    let ghqup = Ghqup::new(root.trim_right(), args);
+                    let ghqup = ghqup::Ghqup::new(root.trim_right(), args);
                     ghqup.run();
                 }
                 Err(err) => panic!("{}", err.description()),
