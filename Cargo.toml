@@ -1,6 +1,10 @@
 [package]
-name = "ghq-updater-rs"
-version = "0.1.0"
 authors = ["CastellaFactory <castellafactory@gmail.com>"]
+name = "ghqup"
+version = "0.1.0"
 
 [dependencies]
+chan = "0.1.18"
+docopt = "0.6.82"
+rustc-serialize = "0.3.19"
+scopeguard = "0.2.0"
