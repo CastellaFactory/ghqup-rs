@@ -114,7 +114,7 @@ impl Ghqup {
             }
             Err(err) => {
                 println!("{}: {}",
-                         self.root.join(repo_type).to_str().unwrap_or(""),
+                         self.root.join(repo_type).join(username).to_str().unwrap_or(""),
                          err.to_string());
             }
         }
