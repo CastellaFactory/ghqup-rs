@@ -136,9 +136,7 @@ impl Ghqup {
                      "{}: \x1b[33mDone\x1b[0m",
                      Path::new(&repo_type).join(&username).join(&repo).display())
                 .unwrap();
-            if !self.args.flag_quiet {
-                print_output(&mut lock, res.stdout);
-            }
+            self.print_output(&mut lock, res.stdout);
         } else if count < self.args.flag_retry {
             self.update(repo_type, username, repo, count + 1);
             return;
@@ -149,16 +147,16 @@ impl Ghqup {
                      "{}: \x1b[31mError\x1b[0m",
                      Path::new(&repo_type).join(&username).join(&repo).display())
                 .unwrap();
-            if !self.args.flag_quiet {
-                print_output(&mut lock, res.stdout);
-            }
+            self.print_output(&mut lock, res.stdout);
         }
     }
-}
 
-fn print_output(lock: &mut StdoutLock, v: Vec<u8>) {
-    match String::from_utf8(v) {
-        Ok(s) => writeln!(lock, "{}", s).unwrap(),
-        _ => {}
-    };
+    fn print_output(&self, lock: &mut StdoutLock, v: Vec<u8>) {
+        if !self.args.flag_quiet {
+            match String::from_utf8(v) {
+                Ok(s) => writeln!(lock, "{}", s).unwrap(),
+                _ => {}
+            };
+        }
+    }
 }
