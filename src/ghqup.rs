@@ -138,6 +138,7 @@ impl Ghqup {
                 .unwrap();
             self.print_output(&mut lock, res.stdout);
         } else if count < self.args.flag_retry {
+            self.wg.add(1);
             self.update(repo_type, username, repo, count + 1);
             return;
         } else {
