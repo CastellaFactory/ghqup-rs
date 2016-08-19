@@ -148,7 +148,7 @@ impl Ghqup {
                      "{}: \x1b[31mError\x1b[0m",
                      Path::new(&repo_type).join(&username).join(&repo).display())
                 .unwrap();
-            self.print_output(&mut lock, res.stdout);
+            self.print_output(&mut lock, res.stderr);
         }
     }
 
