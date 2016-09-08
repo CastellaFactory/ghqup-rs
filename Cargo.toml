@@ -4,7 +4,6 @@ name = "ghqup"
 version = "0.1.0"
 
 [dependencies]
-docopt = "0.6.82"
-rustc-serialize = "0.3.19"
-scopeguard = "0.2.0"
-wait_group = "0.1.2"
+clap = "2.11.2"
+num_cpus = "1.0.0"
+scoped-pool = "1.0.0"
