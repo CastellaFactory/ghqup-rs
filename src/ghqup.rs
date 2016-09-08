@@ -5,9 +5,9 @@ use Args;
 use scoped_pool::Pool;
 
 use std::ffi::OsStr;
-use std::io::{self, BufReader, BufRead, Write, StdoutLock};
+use std::io::{self, BufReader, BufRead, Write};
 use std::path::{Path, PathBuf};
-use std::process;
+use std::process::{self, Output};
 
 #[derive(Clone)]
 pub struct Ghqup {
@@ -61,21 +61,29 @@ impl Ghqup {
             .expect("failed to execute process 'git pull'");
 
         if res.status.success() {
-            let stdout = io::stdout();
-            let mut lock = stdout.lock();
-            writeln!(lock, "{}: \x1b[33mDone\x1b[0m", Path::new(&repo).display()).unwrap();
-            self.print_output(&mut lock, res.stdout);
+            self.print_done_result(res, repo);
         } else if count < self.args.retry {
             self.update(repo, count + 1);
         } else {
-            let stdout = io::stdout();
-            let mut lock = stdout.lock();
-            writeln!(lock, "{}: \x1b[31mError\x1b[0m", Path::new(&repo).display()).unwrap();
-            self.print_output(&mut lock, res.stderr);
+            self.print_error_result(res, repo);
         }
     }
 
-    fn print_output(&self, lock: &mut StdoutLock, v: Vec<u8>) {
+    fn print_done_result(&self, res: Output, repo: String) {
+        let stdout = io::stdout();
+        let mut lock = stdout.lock();
+        let _ = writeln!(lock, "{}: \x1b[33mDone\x1b[0m", Path::new(&repo).display());
+        self.print_output(&mut lock, res.stdout);
+    }
+
+    fn print_error_result(&self, res: Output, repo: String) {
+        let stderr = io::stderr();
+        let mut lock = stderr.lock();
+        let _ = writeln!(lock, "{}: \x1b[31mError\x1b[0m", Path::new(&repo).display());
+        self.print_output(&mut lock, res.stderr);
+    }
+
+    fn print_output<T: Write>(&self, lock: &mut T, v: Vec<u8>) {
         if !self.args.quiet {
             match String::from_utf8(v) {
                 Ok(s) => writeln!(lock, "{}", s).unwrap(),
