@@ -24,7 +24,7 @@ fn main() {
     let m = App::new("ghqup")
         .version(crate_version!())
         .version_short("v")
-        .arg(Arg::with_name("QUIUT")
+        .arg(Arg::with_name("QUIET")
             .long("quiet")
             .short("q")
             .help("Quiet mode"))
